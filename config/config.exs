@@ -41,14 +41,15 @@ config :nerves_network, :default,
   ]
 
 config :lohi_ui, LohiUiWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "nerves-a9c2"],
   http: [port: 80],
   secret_key_base: "I40cUG6cqA15XsNa4tajPdhdrw5JQq5PXES2kW5ypR7IFVfta5JlXSSJ9JR+JLos",
   root: Path.dirname(__DIR__),
   server: true,
   render_errors: [view: LohiUiWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: LohiUi.PubSub, adapter: Phoenix.PubSub.PG2],
-  code_reloader: false
+  code_reloader: false,
+  cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :logger, level: :debug
 
