@@ -38,8 +38,8 @@ defmodule Lohi.MixProject do
   defp deps do
     [
       {:nerves, "~> 1.3", runtime: false},
-      {:nerves_network, "~> 0.3"},
       {:shoehorn, "~> 0.4"},
+      {:poison, "~> 3.1"},
       {:lohi_ui, path: "../lohi_ui"}
     ] ++ deps(@target)
   end
@@ -50,6 +50,8 @@ defmodule Lohi.MixProject do
   defp deps(target) do
     [
       {:nerves_runtime, "~> 0.6"},
+      {:nerves_network, "~> 0.3"},
+      {:nerves_init_gadget, "~> 0.3"},
       {:nerves_io_rc522, github: "arjan/nerves_io_rc522"}
     ] ++ system(target)
   end

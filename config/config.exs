@@ -13,8 +13,18 @@ config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
 # docs for separating out critical OTP applications such as those
 # involved with firmware updates.
 config :shoehorn,
-  init: [:nerves_runtime, :nerves_network, {Lohi.Mpd.Daemon, :create_directories, ["/root/mpd"]}],
+  init: [
+    :nerves_runtime,
+    :nerves_network,
+    :nerves_init_gadget,
+    {Lohi.Mpd.Daemon, :create_directories, ["/root/mpd"]}
+  ],
   app: Mix.Project.config()[:app]
+
+config :nerves_firmware_ssh,
+  authorized_keys: [
+    "ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQByiQjXoWyyugEUfu/Nuzqxr6R4fHjLey1jrABe30FE2ucXNw0ZZtZuLWpJTbVr+s/IXyPMsWugOS+YQEAiRiUV6mFAk7OzLN6UxzDd/scxO4GuS2iOeEDFb4cyw1cHGE2GVn0Wq/I4ZEeJs/M010rF8xnaJmhhAWBGxBGJ3x1aBHnH22ae0OOVjDOE+AgHWBm1vo2SFoQLqDAkXt0+SFRdTtTzilepxgbXUwoPbFlR2Leo6GNwRosggEZfa0FU7LFedu2NXNVBDUh1zs6ZGmZzK+DgjQr+xmJePxEQsX9r6bulpYek9xsWfdDY5Lo2Gqi2BsvrfxuH9ATpPlr0paEt"
+  ]
 
 config :paracusia,
   hostname: "localhost",
@@ -40,8 +50,12 @@ config :nerves_network, :default,
     ipv4_address_method: :dhcp
   ]
 
+config :nerves_init_gadget,
+  ifname: "wlan0",
+  address_method: :dhcp
+
 config :lohi_ui, LohiUiWeb.Endpoint,
-  url: [host: "nerves-a9c2"],
+  url: [host: "nerves.local"],
   http: [port: 80],
   secret_key_base: "I40cUG6cqA15XsNa4tajPdhdrw5JQq5PXES2kW5ypR7IFVfta5JlXSSJ9JR+JLos",
   root: Path.dirname(__DIR__),
@@ -51,7 +65,7 @@ config :lohi_ui, LohiUiWeb.Endpoint,
   code_reloader: false,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :logger, level: :debug
+config :logger, level: :debug, backends: [RingLogger]
 
 # Import target specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
