@@ -20,7 +20,7 @@ defmodule Lohi.Application do
       # Starts a worker by calling: Lohi.Worker.start_link(arg)
       # {Lohi.Worker, arg},
       {Lohi.Mpd.Daemon, []}
-    ] ++ paracusia_childs()
+    ]
   end
 
   def children(_target) do
@@ -29,21 +29,6 @@ defmodule Lohi.Application do
       # {Lohi.Worker, arg},
       {Lohi.Mpd.Daemon, []},
       {Nerves.IO.RC522, {Lohi.Tag, :scanned}}
-    ] ++ paracusia_childs()
-  end
-
-  defp paracusia_childs do
-    # subscriptions are stored in an agent in order to retain them during restarts.
-    {:ok, agent} = Agent.start_link(fn -> [] end)
-    # opts = [strategy: :rest_for_one, name: Paracusia.Supervisor]
-    # Supervisor.start_link(children, opts)
-    [
-      {Paracusia.MpdClient,
-       [
-         retry_after: Application.fetch_env!(:paracusia, :retry_after),
-         max_attempts: Application.fetch_env!(:paracusia, :max_retry_attempts)
-       ]},
-      {Paracusia.PlayerState, agent}
     ]
   end
 end

@@ -30,8 +30,7 @@ defmodule Lohi.MixProject do
   def application do
     [
       mod: {Lohi.Application, []},
-      extra_applications: [:logger, :runtime_tools],
-      included_applications: [:paracusia]
+      extra_applications: [:logger, :runtime_tools]
     ]
   end
 
@@ -41,8 +40,7 @@ defmodule Lohi.MixProject do
       {:nerves, "~> 1.3", runtime: false},
       {:nerves_network, "~> 0.3"},
       {:shoehorn, "~> 0.4"},
-      {:lohi_ui, path: "../lohi_ui"},
-      {:paracusia, "~> 0.2.4"}
+      {:lohi_ui, path: "../lohi_ui"}
     ] ++ deps(@target)
   end
 
