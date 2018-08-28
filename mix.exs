@@ -39,7 +39,9 @@ defmodule Lohi.MixProject do
   defp deps do
     [
       {:nerves, "~> 1.3", runtime: false},
+      {:nerves_network, "~> 0.3"},
       {:shoehorn, "~> 0.4"},
+      {:lohi_ui, path: "../lohi_ui"},
       {:paracusia, "~> 0.2.4"}
     ] ++ deps(@target)
   end

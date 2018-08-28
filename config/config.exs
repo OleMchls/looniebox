@@ -13,7 +13,7 @@ config :nerves, :firmware, rootfs_overlay: "rootfs_overlay"
 # docs for separating out critical OTP applications such as those
 # involved with firmware updates.
 config :shoehorn,
-  init: [:nerves_runtime, {Lohi.Mpd.Daemon, :create_directories, ["/root/mpd"]}],
+  init: [:nerves_runtime, :nerves_network, {Lohi.Mpd.Daemon, :create_directories, ["/root/mpd"]}],
   app: Mix.Project.config()[:app]
 
 config :paracusia,
@@ -23,6 +23,32 @@ config :paracusia,
   retry_after: 1000,
   # Give up if no connection could be established after x attempts.
   max_retry_attempts: 5
+
+config :logger, level: :debug
+
+# For WiFi, set regulatory domain to avoid restrictive default
+config :nerves_network,
+  regulatory_domain: "US"
+
+config :nerves_network, :default,
+  wlan0: [
+    ssid: System.get_env("NERVES_NETWORK_SSID"),
+    psk: System.get_env("NERVES_NETWORK_PSK"),
+    key_mgmt: "WPA-PSK"
+  ],
+  eth0: [
+    ipv4_address_method: :dhcp
+  ]
+
+config :lohi_ui, LohiUiWeb.Endpoint,
+  url: [host: "localhost"],
+  http: [port: 80],
+  secret_key_base: "I40cUG6cqA15XsNa4tajPdhdrw5JQq5PXES2kW5ypR7IFVfta5JlXSSJ9JR+JLos",
+  root: Path.dirname(__DIR__),
+  server: true,
+  render_errors: [view: LohiUiWeb.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: LohiUi.PubSub, adapter: Phoenix.PubSub.PG2],
+  code_reloader: false
 
 config :logger, level: :debug
 
