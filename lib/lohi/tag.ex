@@ -1,3 +1,3 @@
 defmodule Lohi.Tag do
-  def scanned(uuid), do: IO.inspect(uuid, label: "TAG SCANNED")
+  def scanned(uuid), do: LohiUi.Controls.tag(uuid)
 end

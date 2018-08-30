@@ -65,6 +65,10 @@ config :lohi_ui, LohiUiWeb.Endpoint,
   code_reloader: false,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
+config :lohi_ui,
+  music_directory: "/root/mpd/music",
+  playlist_directory: "/root/mpd/playlists"
+
 config :logger, level: :debug, backends: [RingLogger]
 
 # Import target specific config. This must remain at the bottom
