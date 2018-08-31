@@ -14,6 +14,11 @@ defmodule Lohi.Mpd.Daemon do
   # Client
 
   def start_link(_opts) do
+    spawn(fn ->
+      :timer.sleep(10_000)
+      System.cmd("amixer", ["cset", "numid=3", "1"])
+    end)
+
     GenServer.start_link(__MODULE__, [])
   end
 
