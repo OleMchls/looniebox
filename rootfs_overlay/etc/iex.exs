@@ -3,5 +3,7 @@ use Nerves.Runtime.Helpers
 
 RingLogger.attach()
 
+import LohiUi.Controls
+
 # Be careful when adding to this file. Nearly any error can crash the VM and
 # cause a reboot.
