@@ -42,8 +42,8 @@ config :nerves_network,
 
 config :nerves_network, :default,
   wlan0: [
-    ssid: System.get_env("NERVES_NETWORK_SSID"),
-    psk: System.get_env("NERVES_NETWORK_PSK"),
+    ssid: System.get_env("NERVES_NETWORK_SSID") || raise("NERVES_NETWORK_SSID is undefined"),
+    psk: System.get_env("NERVES_NETWORK_PSK") || raise("NERVES_NETWORK_PSK is undefined"),
     key_mgmt: "WPA-PSK"
   ],
   eth0: [
