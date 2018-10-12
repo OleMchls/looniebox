@@ -30,7 +30,7 @@ defmodule Lohi.Application do
       {Lohi.Mpd.Daemon, []},
       {Nerves.IO.RC522, {Lohi.Tag, :scanned}},
       {Lohi.Io.Buttons, []},
-      {Lohi.Io.Led, 20}
+      {Lohi.Lights, []}
     ]
   end
 end
