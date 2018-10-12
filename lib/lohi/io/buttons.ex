@@ -5,34 +5,34 @@ defmodule Lohi.Io.Buttons do
 
   alias ElixirALE.GPIO
 
+  @config %{
+    21 => &LohiUi.Controls.play/0,
+    14 => &LohiUi.Controls.volume_up/0,
+    12 => &LohiUi.Controls.volume_down/0,
+    19 => &LohiUi.Controls.skip/0
+  }
+
   def start_link(default) when is_list(default) do
     GenServer.start_link(__MODULE__, default)
   end
-
-  # LED Pin 20
-
-  # BTN PINs
-  # - 21 Yellow
-  # - 14 White
-  # - 20 Blue
-  # - 16 Green
 
   # Callbacks
 
   @impl true
   def init(pin) do
     Logger.debug("Initializing Lohi Buttons #{pin}")
-    {:ok, input_pid} = GPIO.start_link(21, :input)
-    GPIO.set_int(input_pid, :both)
 
-    {:ok, [input_pid]}
+    input_pids =
+      Enum.map(@config, fn {pin, _fun} ->
+        {:ok, input_pid} = GPIO.start_link(pin, :input)
+        GPIO.set_int(input_pid, :both)
+        input_pid
+      end)
+
+    {:ok, input_pids}
   end
 
-  def button_pressed(pin) do
-    case pin do
-      21 -> LohiUi.Controls.play()
-    end
-  end
+  def button_pressed(pin), do: @config[pin].()
 
   @impl true
   def handle_info({:gpio_interrupt, pin, :rising}, state) do
