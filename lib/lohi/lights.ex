@@ -26,16 +26,20 @@ defmodule Lohi.Lights do
     {:ok, [led0, led1, led2, led3, led4]}
   end
 
-  def handle_call({:flash}, _from, [led0, led1, led2, led3, led4] = leds) do
-    Process.send_after(self(), {:on, led0}, 0)
-    Process.send_after(self(), {:on, led1}, 500)
-    Process.send_after(self(), {:on, led2}, 1000)
-    Process.send_after(self(), {:on, led3}, 1500)
-    Process.send_after(self(), {:on, led4}, 2000)
+  def handle_call({:flash}, _from, leds) do
+    step = 300
+
+    leds
+    |> Enum.with_index()
+    |> Enum.each(fn {led, i} ->
+      Process.send_after(self(), {:on, led}, i * step)
+    end)
+
+    load_duration = length(leds) * step
 
     Enum.each(leds, fn led ->
-      Process.send_after(self(), {:off, led}, 2500)
-      Process.send_after(self(), {:on, led}, 2800)
+      Process.send_after(self(), {:off, led}, load_duration + 500)
+      Process.send_after(self(), {:on, led}, load_duration + 500 + step)
     end)
 
     {:reply, true, leds}
