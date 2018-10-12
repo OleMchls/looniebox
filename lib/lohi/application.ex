@@ -28,7 +28,9 @@ defmodule Lohi.Application do
       # Starts a worker by calling: Lohi.Worker.start_link(arg)
       # {Lohi.Worker, arg},
       {Lohi.Mpd.Daemon, []},
-      {Nerves.IO.RC522, {Lohi.Tag, :scanned}}
+      {Nerves.IO.RC522, {Lohi.Tag, :scanned}},
+      {Lohi.Io.Buttons, []},
+      {Lohi.Io.Led, 20}
     ]
   end
 end

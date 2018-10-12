@@ -67,7 +67,8 @@ config :lohi_ui, LohiUiWeb.Endpoint,
 
 config :lohi_ui,
   music_directory: "/root/mpd/music",
-  playlist_directory: "/root/mpd/playlists"
+  playlist_directory: "/root/mpd/playlists",
+  load_callback: {Lohi.Io.Led, :on, []}
 
 config :logger, level: :debug, backends: [RingLogger]
 

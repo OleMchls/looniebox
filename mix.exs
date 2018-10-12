@@ -52,7 +52,8 @@ defmodule Lohi.MixProject do
       {:nerves_runtime, "~> 0.6"},
       {:nerves_network, "~> 0.3"},
       {:nerves_init_gadget, "~> 0.3"},
-      {:nerves_io_rc522, github: "arjan/nerves_io_rc522"}
+      {:nerves_io_rc522, github: "arjan/nerves_io_rc522"},
+      {:elixir_ale, "~> 1.0"}
     ] ++ system(target)
   end
 
