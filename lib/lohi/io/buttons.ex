@@ -6,10 +6,10 @@ defmodule Lohi.Io.Buttons do
   alias ElixirALE.GPIO
 
   @config %{
-    21 => &LohiUi.Controls.play/0,
+    21 => &LohiUi.Controls.skip/0,
     14 => &LohiUi.Controls.volume_up/0,
     12 => &LohiUi.Controls.volume_down/0,
-    19 => &LohiUi.Controls.skip/0
+    19 => &LohiUi.Controls.play/0
   }
 
   def start_link(default) when is_list(default) do
