@@ -1,6 +1,6 @@
-# Lohi
+# Lohi - An RFID based cassette recorder
 
-**TODO: Add description**
+But without cassette and recording, but with loads of fun for big and small kids.
 
 ## Targets
 
@@ -19,9 +19,18 @@ https://hexdocs.pm/nerves/targets.html#content
 To start your Nerves app:
   * `export MIX_TARGET=my_target` or prefix every command with
     `MIX_TARGET=my_target`. For example, `MIX_TARGET=rpi3`
+  * Clone `lohi_ui` next(adjacent) to this project
   * Install dependencies with `mix deps.get`
   * Create firmware with `mix firmware`
   * Burn to an SD card with `mix firmware.burn`
+
+## Parts list
+
+- Raspberry Pi 3 Model B+
+- Joy-IT MFRC-522 (RFID reader)
+- tbd... (leds, cables, resistors, )
+
+## Wiring
 
 ## Learn more
 
