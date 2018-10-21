@@ -5,6 +5,7 @@ defmodule Lohi.Io.Buttons do
 
   alias ElixirALE.GPIO
 
+  @btn_cooldown 200
   @config %{
     21 => &LohiUi.Controls.skip/0,
     14 => &LohiUi.Controls.volume_up/0,
@@ -22,23 +23,30 @@ defmodule Lohi.Io.Buttons do
   def init(pin) do
     Logger.debug("Initializing Lohi Buttons #{pin}")
 
-    input_pids =
-      Enum.map(@config, fn {pin, _fun} ->
-        {:ok, input_pid} = GPIO.start_link(pin, :input)
-        GPIO.set_int(input_pid, :both)
-        input_pid
-      end)
+    Enum.each(@config, fn {pin, _fun} ->
+      {:ok, input_pid} = GPIO.start_link(pin, :input)
+      GPIO.set_int(input_pid, :both)
+    end)
 
-    {:ok, input_pids}
+    {:ok, %{enabled: true}}
   end
 
   def button_pressed(pin), do: @config[pin].()
 
   @impl true
+  def handle_info(:reset, state), do: {:noreply, %{state | enabled: true}}
+
+  @impl true
   def handle_info({:gpio_interrupt, pin, :rising}, state) do
     Logger.debug("Rising on pin #{pin}")
-    button_pressed(pin)
-    {:noreply, state}
+
+    if state.enabled do
+      button_pressed(pin)
+      Process.send_after(self(), :reset, @btn_cooldown)
+      {:noreply, %{state | enabled: false}}
+    else
+      {:noreply, state}
+    end
   end
 
   @impl true
