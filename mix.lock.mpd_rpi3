@@ -34,4 +34,5 @@
   "shoehorn": {:hex, :shoehorn, "0.4.0", "f3830e22e1c58b502e8c436623804c4eb6ed15f5d0bdbacdeb448cddf4795951", [:mix], [{:distillery, "~> 2.0", [hex: :distillery, repo: "hexpm", optional: false]}], "hexpm"},
   "socket": {:hex, :socket, "0.3.13", "98a2ab20ce17f95fb512c5cadddba32b57273e0d2dba2d2e5f976c5969d0c632", [:mix], [], "hexpm"},
   "system_registry": {:hex, :system_registry, "0.8.0", "09240347628b001433d18279a2759ef7237ba7361239890d8c599cca9a2fbbc2", [:mix], [], "hexpm"},
+  "uuid": {:hex, :uuid, "1.1.8", "e22fc04499de0de3ed1116b770c7737779f226ceefa0badb3592e64d5cfb4eb9", [:mix], [], "hexpm"},
 }
