@@ -44,7 +44,7 @@ config :nerves_network, :default,
   wlan0: [
     ssid: System.get_env("NERVES_NETWORK_SSID") || raise("NERVES_NETWORK_SSID is undefined"),
     psk: System.get_env("NERVES_NETWORK_PSK") || raise("NERVES_NETWORK_PSK is undefined"),
-    key_mgmt: "WPA-PSK"
+    key_mgmt: :"WPA-PSK"
   ],
   eth0: [
     ipv4_address_method: :dhcp
@@ -52,7 +52,10 @@ config :nerves_network, :default,
 
 config :nerves_init_gadget,
   ifname: "wlan0",
-  address_method: :dhcp
+  address_method: :dhcp,
+  mdns_domain: "nerves.local",
+  node_name: nil,
+  node_host: :mdns_domain
 
 config :lohi_ui, LohiUiWeb.Endpoint,
   url: [host: "nerves.local"],
