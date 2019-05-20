@@ -36,8 +36,6 @@ config :paracusia,
   # Give up if no connection could be established after x attempts.
   max_retry_attempts: 20
 
-config :logger, level: :debug
-
 # For WiFi, set regulatory domain to avoid restrictive default
 config :nerves_network,
   regulatory_domain: "US"
