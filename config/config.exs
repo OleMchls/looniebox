@@ -53,9 +53,9 @@ config :nerves_network, :default,
 config :nerves_init_gadget,
   ifname: "wlan0",
   address_method: :dhcp,
-  mdns_domain: "#{System.get_env("NERVES_HOST") || raise("NERVES_HOST is undefined")}.local",
-  node_name: nil,
-  node_host: :mdns_domain
+  node_name: System.get_env("NERVES_HOST") || raise("NERVES_HOST is undefined"),
+  node_host: :mdns_domain,
+  mdns_domain: :hostname
 
 config :lohi_ui, LohiUiWeb.Endpoint,
   url: [host: "#{System.get_env("NERVES_HOST") || raise("NERVES_HOST is undefined")}.local"],
@@ -75,20 +75,17 @@ config :lohi_ui,
   load_callback: {Lohi.Lights, :flash, []}
 
 config :libcluster,
-  debug: true,
+  debug: false,
   topologies: [
     lohi: [
       strategy: Elixir.Cluster.Strategy.Gossip,
       config: [
-        port: 45892,
-        if_addr: "0.0.0.0",
-        multicast_addr: "192.168.178.255",
-        multicast_ttl: 1,
-        secret: "6PvqGXelxXCyIlhh7IJf"
-      ],
-      connect: {:net_kernel, :connect_node, []},
-      disconnect: {:erlang, :disconnect_node, []},
-      list_nodes: {:erlang, :nodes, [:connected]}
+        #   port: 45892,
+        #   if_addr: "0.0.0.0",
+        multicast_addr: "192.168.178.255"
+        # multicast_ttl: 1
+        #   secret: "6PvqGXelxXCyIlhh7IJf"
+      ]
     ]
   ]
 
