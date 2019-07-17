@@ -69,9 +69,28 @@ config :lohi_ui, LohiUiWeb.Endpoint,
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 config :lohi_ui,
+  max_volume: 100,
   music_directory: "/root/mpd/music",
   playlist_directory: "/root/mpd/playlists",
   load_callback: {Lohi.Lights, :flash, []}
+
+config :libcluster,
+  debug: true,
+  topologies: [
+    lohi: [
+      strategy: Elixir.Cluster.Strategy.Gossip,
+      config: [
+        port: 45892,
+        if_addr: "0.0.0.0",
+        multicast_addr: "192.168.178.255",
+        multicast_ttl: 1,
+        secret: "6PvqGXelxXCyIlhh7IJf"
+      ],
+      connect: {:net_kernel, :connect_node, []},
+      disconnect: {:erlang, :disconnect_node, []},
+      list_nodes: {:erlang, :nodes, [:connected]}
+    ]
+  ]
 
 config :logger, level: :debug, backends: [RingLogger]
 
