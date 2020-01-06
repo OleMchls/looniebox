@@ -8,8 +8,10 @@ Basically a tape deck recorder but replaces the cassettes with RFID tags. You ca
 
 Here is a video demoing this: https://twitter.com/OleMchls/status/1150655108193169408
 
+Under the hood it's utilizing the [MPD (**M**usic **P**layer **D**aemon)](https://www.musicpd.org/) to control the music.
+
 ## Why?
-Why not!?
+Why not?!
 
 ## Getting Started
 This is a hobby / side project. You probably wont be able to _just_ clone and deploy this project for yourself. You will need to spend some time to understand the project and code, including nerves and phoenix.
@@ -18,30 +20,50 @@ All resources are out there but remember this project comes _as is_.
 
 ### Project structure
 
-The project consists of two more or less independent repositories.
+The project consists of two more or less independent repositories. There is
+
+### Lohi
+This repository.
+
+It's the startingpoint but it only contains just minimum config and dependencies to run and deploy to Nerves. So this project:
+
+- Has a hard dependency to Lohi-UI
+- Starts and configures the Music Player Daemon (MPD)
+- Gives button input to Lohi-UI
+- etc...
+
+### Lohi UI
+https://github.com/OleMchls/lohi_ui
+
+It's the main application, it has no hardware dependency, so it can be developed locally without Nerves or a RaspberryPI. This project:
+
+- provides the phoenix app to upload and manage playlists
+- gives controls to start and stop the playlist
+- talks to the Lohi MPD via a mpd client (paracusia)
 
 ## Parts list
+These are the components with a software dependency:
 - Raspberry Pi 3 Model B+
 - Joy-IT MFRC-522 (RFID reader)
 
-These are the components with a software dependency. Depending on how you would like to build your box you will also need:
+Depending on how you would like to build your box you will also need:
 
 ### Power
-- USB Cable _To cut GND place the switch._
-- Switch _Any (at least) two way switch will do._
-- Powerbank _I use a Anker Powerbank PowerCore 10000mAh. Remember, these add the majority of the weight and a RaspberryPI does not need much power._
+- **USB Cable** _To cut GND place the switch._
+- **Switch** _Any (at least) two way switch will do._
+- **Powerbank** _I use a Anker Powerbank PowerCore 10000mAh. Remember, these add the majority of the weight and a RaspberryPI does not need much power._
 
 ### Audio
-- AMP _If you want to build it with speakers. I used the DEBO SOUND AMP2._
-- Speaker _For the DEBO AMP any that is < 15 Watt_
-- Audiojack _If you also want headphone support. Make sure it's stereo and passthrough if you want to use headphones and a speaker._
+- **AMP** _If you want to build it with speakers. I used the DEBO SOUND AMP2._
+- **Speaker** _For the DEBO AMP any that is < 15 Watt_
+- **Audiojack** _If you also want headphone support. Make sure it's stereo and passthrough if you want to use headphones and a speaker._
 
 ### Misc
 You will need all sorts of wires, LEDs and buttons:
-- 4 buttons _I used "ARCADE BUTTONS"._
-- 1 LED for general power indication
-- 5 LEDs for the boot & readiness animation
-- Wires and tools (soldering iron, tongs, etc...)
+- **4 buttons** _I used "ARCADE BUTTONS"._
+- **1 LED** for general power indication
+- **5 LEDs** for the boot & readiness animation
+- **Wires** and tools (soldering iron, tongs, etc...)
 
 ## Wiring
 HAHA IDK! But seriously, you will need some reverse engineering of https://github.com/OleMchls/lohi/blob/master/lib/lohi/io/buttons.ex#L9-L14 for the buttons and https://github.com/OleMchls/lohi/blob/master/lib/lohi/lights.ex#L20-L24 for the LEDs.
