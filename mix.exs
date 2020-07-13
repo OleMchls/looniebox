@@ -1,21 +1,22 @@
-defmodule Lohi.MixProject do
+defmodule Looniebox.MixProject do
   use Mix.Project
 
-  @target System.get_env("MIX_TARGET") || "host"
+  @app :looniebox
+  @version "0.1.0"
+  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :rpi4, :bbb, :x86_64, :mpd_rpi3]
 
   def project do
     [
-      app: :lohi,
-      version: "0.1.0",
-      elixir: "~> 1.6",
-      target: @target,
-      archives: [nerves_bootstrap: "~> 1.0"],
-      deps_path: "deps/#{@target}",
-      build_path: "_build/#{@target}",
-      lockfile: "mix.lock.#{@target}",
+      app: @app,
+      version: @version,
+      elixir: "~> 1.9",
+      archives: [nerves_bootstrap: "~> 1.8"],
       start_permanent: Mix.env() == :prod,
+      build_embedded: true,
       aliases: [loadconfig: [&bootstrap/1]],
-      deps: deps()
+      deps: deps(),
+      releases: [{@app, release()}],
+      preferred_cli_target: [run: :host, test: :host]
     ]
   end
 
@@ -29,7 +30,7 @@ defmodule Lohi.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {Lohi.Application, []},
+      mod: {Looniebox.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -37,33 +38,42 @@ defmodule Lohi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:nerves, "~> 1.3", runtime: false},
-      {:shoehorn, "~> 0.4"},
-      {:poison, "~> 3.1"},
-      {:lohi_ui, path: "../lohi_ui"}
-    ] ++ deps(@target)
+      # Dependencies for all targets
+      {:nerves, "~> 1.6.0", runtime: false},
+      {:shoehorn, "~> 0.6"},
+      {:ring_logger, "~> 0.6"},
+      {:toolshed, "~> 0.2"},
+      {:jason, "~> 1.0"},
+      {:lohi_ui, path: "../lohi_ui"},
+
+      # Dependencies for all targets except :host
+      {:nerves_runtime, "~> 0.6", targets: @all_targets},
+      {:nerves_pack, "~> 0.2", targets: @all_targets},
+      {:nerves_io_rc522, github: "arjan/nerves_io_rc522", targets: @all_targets},
+      {:elixir_ale, "~> 1.2", targets: @all_targets},
+
+      # Dependencies for specific targets
+      {:nerves_system_rpi, "~> 1.12", runtime: false, targets: :rpi},
+      {:nerves_system_rpi0, "~> 1.12", runtime: false, targets: :rpi0},
+      {:nerves_system_rpi2, "~> 1.12", runtime: false, targets: :rpi2},
+      {:nerves_system_rpi3, "~> 1.12", runtime: false, targets: :rpi3},
+      {:nerves_system_rpi3a, "~> 1.12", runtime: false, targets: :rpi3a},
+      {:nerves_system_rpi4, "~> 1.12", runtime: false, targets: :rpi4},
+      {:nerves_system_bbb, "~> 2.7", runtime: false, targets: :bbb},
+      {:nerves_system_x86_64, "~> 1.12", runtime: false, targets: :x86_64},
+
+      # Custom Targets
+      {:mpd_rpi3, github: "OleMchls/mpd_rpi3", runtime: false, targets: :mpd_rpi3}
+    ]
   end
 
-  # Specify target specific dependencies
-  defp deps("host"), do: []
-
-  defp deps(target) do
+  def release do
     [
-      {:nerves_runtime, "~> 0.6"},
-      {:nerves_network, "~> 0.3"},
-      {:nerves_init_gadget, "~> 0.3"},
-      {:nerves_io_rc522, github: "arjan/nerves_io_rc522"},
-      {:elixir_ale, "~> 1.0"}
-    ] ++ system(target)
+      overwrite: true,
+      cookie: "#{@app}_cookie",
+      include_erts: &Nerves.Release.erts/0,
+      steps: [&Nerves.Release.init/1, :assemble],
+      strip_beams: Mix.env() == :prod
+    ]
   end
-
-  defp system("rpi"), do: [{:nerves_system_rpi, "~> 1.0", runtime: false}]
-  defp system("rpi0"), do: [{:nerves_system_rpi0, "~> 1.0", runtime: false}]
-  defp system("rpi2"), do: [{:nerves_system_rpi2, "~> 1.0", runtime: false}]
-  defp system("rpi3"), do: [{:nerves_system_rpi3, "~> 1.0", runtime: false}]
-  defp system("mpd_rpi3"), do: [{:mpd_rpi3, github: "OleMchls/mpd_rpi3", runtime: false}]
-  defp system("bbb"), do: [{:nerves_system_bbb, "~> 1.0", runtime: false}]
-  defp system("ev3"), do: [{:nerves_system_ev3, "~> 1.0", runtime: false}]
-  defp system("x86_64"), do: [{:nerves_system_x86_64, "~> 1.0", runtime: false}]
-  defp system(target), do: Mix.raise("Unknown MIX_TARGET: #{target}")
 end

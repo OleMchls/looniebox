@@ -1,9 +1,9 @@
 require Logger
 
-defmodule Lohi.Lights do
+defmodule Looniebox.Lights do
   use GenServer
 
-  alias Lohi.Io.Led
+  alias Looniebox.Io.Led
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
