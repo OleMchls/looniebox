@@ -108,6 +108,12 @@ config :mdns_lite,
       protocol: "epmd",
       transport: "tcp",
       port: 4369
+    },
+    %{
+      name: "Looniebox Web Interface",
+      protocol: "http",
+      transport: "tcp",
+      port: 80
     }
   ]
 
