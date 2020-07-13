@@ -1,6 +1,6 @@
 require Logger
 
-defmodule Lohi.Io.Led do
+defmodule Looniebox.Io.Led do
   use GenServer
 
   alias ElixirALE.GPIO

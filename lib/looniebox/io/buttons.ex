@@ -1,6 +1,6 @@
 require Logger
 
-defmodule Lohi.Io.Buttons do
+defmodule Looniebox.Io.Buttons do
   use GenServer
 
   alias ElixirALE.GPIO

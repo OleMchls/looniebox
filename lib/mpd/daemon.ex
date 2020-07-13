@@ -1,14 +1,11 @@
 require Logger
 
-defmodule Lohi.Mpd.Daemon do
+defmodule Mpd.Daemon do
   use GenServer
 
   def create_directories(base) do
     File.mkdir_p!(base <> "/music")
     File.mkdir_p!(base <> "/playlists")
-
-    File.cp("/etc/chime.mp3", base <> "/music/chime.mp3")
-    File.cp("/etc/chime_long.mp3", base <> "/music/chime_long.mp3")
   end
 
   # Client
