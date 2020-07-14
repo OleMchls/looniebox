@@ -3,7 +3,7 @@ require Logger
 defmodule Looniebox.Io.Led do
   use GenServer
 
-  alias ElixirALE.GPIO
+  alias Circuits.GPIO
 
   def start_link(pin) do
     GenServer.start_link(__MODULE__, pin)
@@ -24,7 +24,7 @@ defmodule Looniebox.Io.Led do
   @impl true
   def init(pin) do
     Logger.debug("Initializing Lohi Led #{pin}")
-    GPIO.start_link(pin, :output)
+    GPIO.open(pin, :output)
   end
 
   def handle_call({:switch, value}, _from, out), do: {:reply, GPIO.write(out, value), out}

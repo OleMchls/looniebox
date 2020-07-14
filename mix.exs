@@ -50,7 +50,7 @@ defmodule Looniebox.MixProject do
       {:nerves_runtime, "~> 0.6", targets: @all_targets},
       {:nerves_pack, "~> 0.2", targets: @all_targets},
       {:nerves_io_rc522, github: "arjan/nerves_io_rc522", targets: @all_targets},
-      {:elixir_ale, "~> 1.2", targets: @all_targets},
+      {:circuits_gpio, "~> 0.4", targets: @all_targets},
 
       # Dependencies for specific targets
       {:nerves_system_rpi, "~> 1.12", runtime: false, targets: :rpi},

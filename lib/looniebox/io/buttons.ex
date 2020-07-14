@@ -3,12 +3,12 @@ require Logger
 defmodule Looniebox.Io.Buttons do
   use GenServer
 
-  alias ElixirALE.GPIO
+  alias Circuits.GPIO
 
   @btn_cooldown 200
   @config %{
     21 => &LohiUi.Controls.skip/0,
-    14 => &LohiUi.Controls.volume_up/0,
+    18 => &LohiUi.Controls.volume_up/0,
     12 => &LohiUi.Controls.volume_down/0,
     19 => &LohiUi.Controls.play/0
   }
@@ -20,15 +20,17 @@ defmodule Looniebox.Io.Buttons do
   # Callbacks
 
   @impl true
-  def init(pin) do
-    Logger.debug("Initializing Lohi Buttons #{pin}")
+  def init(_default) do
+    Logger.debug("Initializing Lohi Buttons")
 
-    Enum.each(@config, fn {pin, _fun} ->
-      {:ok, input_pid} = GPIO.start_link(pin, :input)
-      GPIO.set_int(input_pid, :both)
-    end)
+    btn_refs =
+      Enum.map(@config, fn {pin, _fun} ->
+        {:ok, gpio} = GPIO.open(pin, :input)
+        GPIO.set_interrupts(gpio, :both)
+        gpio
+      end)
 
-    {:ok, %{enabled: true}}
+    {:ok, %{enabled: true, btns: btn_refs}}
   end
 
   def button_pressed(pin), do: @config[pin].()
@@ -37,7 +39,7 @@ defmodule Looniebox.Io.Buttons do
   def handle_info(:reset, state), do: {:noreply, %{state | enabled: true}}
 
   @impl true
-  def handle_info({:gpio_interrupt, pin, :rising}, state) do
+  def handle_info({:circuits_gpio, pin, _timestamp, 1}, state) do
     Logger.debug("Rising on pin #{pin}")
 
     if state.enabled do
@@ -50,7 +52,7 @@ defmodule Looniebox.Io.Buttons do
   end
 
   @impl true
-  def handle_info({:gpio_interrupt, pin, :falling}, state) do
+  def handle_info({:circuits_gpio, pin, _timestamp, 0}, state) do
     Logger.debug("Falling on pin #{pin}")
     {:noreply, state}
   end
