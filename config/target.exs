@@ -10,7 +10,7 @@ config :shoehorn,
     :nerves_pack,
     {Mpd.Daemon, :create_directories, ["/root/mpd"]},
     {System, :cmd, ["epmd", ["-daemon"]]},
-    {Looniebox, :start_node}
+    {Looniebox, :start_node, []}
   ],
   app: Mix.Project.config()[:app]
 

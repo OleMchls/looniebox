@@ -2,7 +2,10 @@ import Config
 
 config :phoenix, :json_library, Jason
 
-name = System.get_env("LOONIEBOX_NAME") || raise("LOONIEBOX_NAME is undefined. Musts be the kids name.")
+name =
+  System.get_env("LOONIEBOX_NAME") ||
+    raise("LOONIEBOX_NAME is undefined. Musts be the kids name.")
+
 config :lohi_ui, LohiUiWeb.Endpoint,
   url: [host: "#{name}-looniebox.local"],
   http: [port: 80],
