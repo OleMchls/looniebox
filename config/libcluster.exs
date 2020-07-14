@@ -1,7 +1,7 @@
 import Config
 
 config :libcluster,
-  debug: true,
+  debug: false,
   topologies: [
     lohi: [
       strategy: Elixir.Cluster.Strategy.Gossip,
