@@ -25,6 +25,7 @@ config :nerves, source_date_epoch: "1594070544"
 
 config :logger, backends: [RingLogger]
 
+import_config "libcluster.exs"
 import_config "paracusia.exs"
 import_config "lohi_ui.exs"
 

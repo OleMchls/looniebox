@@ -1,19 +1,7 @@
 defmodule Looniebox do
-  @moduledoc """
-  Documentation for Looniebox.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Looniebox.hello
-      :world
-
-  """
-  def hello do
-    :world
+  def start_node do
+    {:ok, hostname} = :inet.gethostname()
+    Node.start(:"nerves@#{hostname}.local")
   end
 
   def scanned(uuid), do: LohiUi.Controls.tag(uuid)
