@@ -26,11 +26,15 @@ defmodule Looniebox.Io.Buttons do
     btn_refs =
       Enum.map(@config, fn {pin, _fun} ->
         {:ok, gpio} = GPIO.open(pin, :input)
+        GPIO.set_pull_mode(gpio, :pullup)
         GPIO.set_interrupts(gpio, :both)
         gpio
       end)
 
-    {:ok, %{enabled: true, btns: btn_refs}}
+    # Ignore the initial btn reading by Initializing disabled and reset after cooldown
+    Process.send_after(self(), :reset, @btn_cooldown)
+
+    {:ok, %{enabled: false, btns: btn_refs}}
   end
 
   def button_pressed(pin), do: @config[pin].()
