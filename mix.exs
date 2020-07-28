@@ -3,7 +3,8 @@ defmodule Looniebox.MixProject do
 
   @app :looniebox
   @version "0.1.0"
-  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :rpi4, :bbb, :x86_64, :mpd_rpi3]
+  @looniebox_targets [:"jonas-looniebox", :"luisa-looniebox"]
+  @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :rpi4, :bbb, :x86_64] ++ @looniebox_targets
 
   def project do
     [
@@ -63,7 +64,7 @@ defmodule Looniebox.MixProject do
       {:nerves_system_x86_64, "~> 1.12", runtime: false, targets: :x86_64},
 
       # Custom Targets
-      {:mpd_rpi3, github: "OleMchls/mpd_rpi3", runtime: false, targets: :mpd_rpi3}
+      {:mpd_rpi3, github: "OleMchls/mpd_rpi3", runtime: false, targets: @looniebox_targets}
     ]
   end
 

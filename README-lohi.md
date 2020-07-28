@@ -77,7 +77,7 @@ Now for the exciting part; you have the basics put together and want to start pu
 For the project to build successfully you will need these environment variables (obviously you may want to adjust to your local network preferences):
 
 ```
-MIX_TARGET=mpd_rpi3
+MIX_TARGET=jonas-looniebox
 NERVES_NETWORK_SSID=looniebox
 NERVES_NETWORK_PSK=youdontknowjack
 NERVES_HOST=kiddoname-looniebox # This is the for the cluster feature that is still in development

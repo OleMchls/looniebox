@@ -77,10 +77,6 @@ config :vintage_net,
      }}
   ]
 
-name =
-  System.get_env("LOONIEBOX_NAME") ||
-    raise("LOONIEBOX_NAME is undefined. Musts be the kids name.")
-
 config :mdns_lite,
   # The `host` key specifies what hostnames mdns_lite advertises.  `:hostname`
   # advertises the device's hostname.local. For the official Nerves systems, this
@@ -88,7 +84,7 @@ config :mdns_lite,
   # "nerves.local" for convenience. If more than one Nerves device is on the
   # network, delete "nerves" from the list.
 
-  host: [:hostname, "#{name}-looniebox"],
+  host: [:hostname, "looniebox"],
   ttl: 120,
 
   # Advertise the following services over mDNS.
@@ -123,4 +119,4 @@ config :mdns_lite,
 # of this file so it overrides the configuration defined above.
 # Uncomment to use target specific configurations
 
-# import_config "#{Mix.target()}.exs"
+import_config "#{Mix.target()}.exs"

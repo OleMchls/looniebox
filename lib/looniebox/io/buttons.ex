@@ -6,12 +6,7 @@ defmodule Looniebox.Io.Buttons do
   alias Circuits.GPIO
 
   @btn_cooldown 200
-  @config %{
-    21 => &LohiUi.Controls.skip/0,
-    18 => &LohiUi.Controls.volume_up/0,
-    12 => &LohiUi.Controls.volume_down/0,
-    19 => &LohiUi.Controls.play/0
-  }
+  @config Application.get_env(:looniebox, :button_config, %{})
 
   def start_link(default) when is_list(default) do
     GenServer.start_link(__MODULE__, default)

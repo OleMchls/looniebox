@@ -5,6 +5,8 @@ defmodule Looniebox.Lights do
 
   alias Looniebox.Io.Led
 
+  @pins Application.get_env(:looniebox, :lights, %{})
+
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
@@ -17,13 +19,9 @@ defmodule Looniebox.Lights do
 
   @impl true
   def init(pin) do
-    {:ok, led0} = Led.start_link(20)
-    {:ok, led1} = Led.start_link(26)
-    {:ok, led2} = Led.start_link(16)
-    {:ok, led3} = Led.start_link(6)
-    {:ok, led4} = Led.start_link(13)
+    leds = Enum.map(@pins, fn pin -> elem(Led.start_link(pin), 1) end)
 
-    {:ok, [led0, led1, led2, led3, led4]}
+    {:ok, leds}
   end
 
   def handle_call({:flash}, _from, leds) do
