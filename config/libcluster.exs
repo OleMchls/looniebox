@@ -1,15 +1,15 @@
 import Config
 
 config :libcluster,
-  debug: false,
+  debug: true,
   topologies: [
     lohi: [
-      strategy: Elixir.Cluster.Strategy.Gossip,
+      strategy: Cluster.Strategy.DNSPoll,
       config: [
-        # port: 45892,
-        # if_addr: "0.0.0.0",
-        multicast_addr: "192.168.178.255"
-        # multicast_ttl: 1,
+        polling_interval: 5_000,
+        query: "_epmd._tcp.local",
+        node_basename: "nerves",
+        resolver: &LoonieBox.Mdns.Resolver.resolve/1
       ]
     ]
   ]

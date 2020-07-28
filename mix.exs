@@ -46,6 +46,7 @@ defmodule Looniebox.MixProject do
       {:toolshed, "~> 0.2"},
       {:jason, "~> 1.0"},
       {:lohi_ui, path: "../lohi_ui"},
+      {:mdns, "~> 1.0"},
 
       # Dependencies for all targets except :host
       {:nerves_runtime, "~> 0.6", targets: @all_targets},
