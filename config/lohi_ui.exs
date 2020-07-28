@@ -17,4 +17,6 @@ config :lohi_ui,
   max_volume: 80,
   music_directory: "/root/mpd/music",
   playlist_directory: "/root/mpd/playlists",
-  load_callback: {Looniebox.Lights, :flash, []}
+  load_callback: &Looniebox.Lights.flash/0,
+  volume_change_callback: &Looniebox.Lights.volume/1,
+  success_callback: &Looniebox.Lights.blink/0
